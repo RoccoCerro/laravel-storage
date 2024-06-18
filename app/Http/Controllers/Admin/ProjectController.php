@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -48,6 +49,14 @@ class ProjectController extends Controller
         $n = 0;
         // dd($data_weapon);
 
+        if ($request->hasFile('img_url')){
+            $image_path = Storage::disk('public')->put('img_url', $request->img_url);
+            $data_projects['img_url'] = $image_path;
+        } else {
+            $randomNumber = rand(1, 1000);
+            $data_projects['img_url'] = "https://picsum.photos/id/{$randomNumber}/2000/3000";
+        }
+
         do {
             // SELECT * FROM `posts` WHERE `slug` = ?
             $find = Project::where('slug', $slug)->first(); // null | Post
@@ -60,11 +69,11 @@ class ProjectController extends Controller
 
         $data_projects['slug'] = $slug;
 
-        if($data_projects['img_url'] === null){
+        // if($data_projects['img_url'] === null){
             
-            $randomNumber = rand(1, 1000);
-            $data_projects['img_url'] = "https://picsum.photos/id/{$randomNumber}/2000/3000";
-        }
+        //     $randomNumber = rand(1, 1000);
+        //     $data_projects['img_url'] = "https://picsum.photos/id/{$randomNumber}/2000/3000";
+        // }
 
         $new_project = Project::create($data_projects);
 

@@ -23,7 +23,9 @@
         </ul>
       </div>
       <div class="project-img">
-        <img src="{{ $project->img_url }}" alt="">
+        <figure>
+          <img src="{{ asset('storage/' . $project->img_url) }}" alt="">
+        </figure>
       </div>
     </div>
   </section>
